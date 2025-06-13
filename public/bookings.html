@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронирование номера</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="logo-and-name">
+                <a href="index.html"><img src="photo/logo.png" alt="Логотип гостиницы Элегант" class="logo"></a>
+                <h1>Элегант</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="login.html">Авторизация</a></li>
+                    <li class="current"><a href="rooms.html">Номера</a></li> <!-- Исправлено на rooms.html -->
+                    <li><a href="posts.html">Новости</a></li>
+                    <li><a href="profil.html">Профиль</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="main">
+        <div class="container">
+            <article id="main-col">
+                <h2>Бронирование номера</h2>
+                <!-- Здесь будет выводиться название выбранного номера -->
+                <h3 id="selected-room-name"></h3>
+
+                <form id="bookingForm"> <!-- Добавляем тег form с ID -->
+                    <label for="arrival-date">Дата заезда:</label>
+                    <input type="date" id="arrival-date" name="arrival-date" required>
+
+                    <label for="departure-date">Дата выезда:</label>
+                    <input type="date" id="departure-date" name="departure-date" required>
+
+                    <label for="num-guests">Количество гостей:</label>
+                    <select id="num-guests" name="num-guests">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Телефон:</label>
+                    <input type="tel" id="phone" name="phone">
+
+                    <label for="comments">Пожелания:</label>
+                    <textarea id="comments" name="comments" rows="4"></textarea>
+
+                    <button class="book-button" type="submit">Забронировать</button> <!-- type="submit" для отправки формы -->
+                </form>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="contact-info">
+                <h3>Контактная информация</h3>
+                <p>Телефон: <a href="#">+7 (777) 777-77-77</a></p>
+                <p>Email: <a href="#">info@eleganthotel.com</a></p>
+            </div>
+            <div class="navigation">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="rooms.html">Номера</a></li>
+                    <li><a href="posts.html">Новости</a></li>
+                    <li><a href="profil.html">Профиль</a></li>
+                    <li><a href="login.html">Авторизация</a></li>
+                    <li><a href="register.html">Регистрация</a></li>
+                </ul>
+            </div>
+            <div class="social-media">
+                <h3>Социальные сети</h3>
+                <a href="https://t.me/elegant_kostroma" target="_blank" class="social-icon"><img src="photo/telegram.png"
+                        alt="Telegram" class="logo"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/bookings.js"></script> <!-- Подключаем JS файл -->
+</body>
+</html>

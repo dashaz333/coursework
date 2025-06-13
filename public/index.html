@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Главная</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div id="logo-and-name">
+                <a href="index.html"><img src="photo/logo.png" alt="Логотип гостиницы Элегант" class="logo"></a>
+                <h1>Элегант</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="#">Главная</a></li>
+                    <li><a href="login.html">Авторизация</a></li>
+                    <li><a href="rooms.html">Номера</a></li>
+                    <li><a href="posts.html">Новости</a></li>
+                    <li><a href="profil.html" id="profile-link">Профиль</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+   <div id="registrationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Для бронирования нужен аккаунт</h2>
+        <p>Пожалуйста, авторизуйтесь или зарегистрируйтесь, чтобы забронировать номер.</p>
+        <button id="goToLogin">Авторизоваться</button>
+        <button id="goToRegistration">Зарегистрироваться</button>
+    </div>
+</div>
+
+    <!-- Блок с информацией о нас -->
+    <section id="about-us">
+        <div class="about-container">
+            <div class="about-text">
+                <h2>О нас</h2>
+                <p>Сайт гостиницы &quot;Элегант&quot; — это ваш надежный помощник в организации комфортного пребывания в нашем отеле. Мы разработали удобный интерфейс, который позволит вам быстро и легко забронировать номер, ознакомиться с доступными вариантами размещения и узнать больше о нашей гостинице.</p>
+            </div>
+            <div class="about-image">
+                <img src="photo/hotel.jpg" alt="гостиница Элегант">
+            </div>
+        </div>
+    </section>
+
+    <section id="director">
+        <div class="director-container">
+            <div class="director-text">
+                <h2>Генеральный директор</h2>
+                <p>Анна Айрапетовна Саргсян</p>
+            </div>
+            <div class="director-image">
+                <img src="photo/generaldir.jpg" alt="Генеральный директор">
+            </div>
+        </div>
+    </section>
+    
+    <section id="main">
+        <div class="container">
+            <article id="main-col">
+                <h2>Наши лучшие номера</h2>
+                <div id="rooms">
+                  <script src="js/rooms.js"></script>
+                </div>
+            </article>
+        </div>
+    </section>
+<!-- Модальное окно для уведомления о регистрации -->
+<div id="registrationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="hideRegistrationModal()">&times;</span>
+        <h2>Вы не зарегистрированы</h2>
+        <p>Пожалуйста, авторизуйтесь, чтобы просматривать номера.</p>
+        <button onclick="window.location.href='login.html'">Перейти к авторизации</button>
+    </div>
+</div>
+    <footer>
+    <div class="footer-container">
+        <div class="contact-info">
+            <h3>Контактная информация</h3>
+            <p>Телефон: <a href="#">+7 (777) 777-77-77</a></p>
+            <p>Email: <a href="#">info@eleganthotel.com</a></p>
+        </div>
+
+        <div class="navigation">
+            <h3>Навигация</h3>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="rooms.html">Номера</a></li>
+                <li><a href="posts.html">Новости</a></li>
+                <li><a href="profil.html">Профиль</a></li>
+                <li><a href="login.html">Авторизация</a></li>
+                <li><a href="register.html">Регистрация</a></li>
+            </ul>
+        </div>
+
+        <div class="social-media">
+            <h3>Социальные сети</h3>
+            <a href="https://t.me/elegant_kostroma" target="_blank" class="social-icon"><img src="photo/telegram.png" alt="Telegram" class="logo"></a>
+        </div>
+    </div>
+    </footer>
+<script src="js/modal.js"></script>
+</body>
+</html>

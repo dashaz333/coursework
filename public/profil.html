@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Профиль</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="logo-and-name">
+                <a href="index.html"><img src="photo/logo.png" alt="Логотип гостиницы Элегант" class="logo"></a>
+                <h1>Элегант</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="login.html">Авторизация</a></li>
+                    <li><a href="rooms.html">Номера</a></li>
+                    <li><a href="posts.html">Новости</a></li>
+                    <li class="current"><a href="#">Профиль</a></li>
+                    <li><a href="#" onclick="logout()">Выход</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <script>
+    function logout() {
+        sessionStorage.clear();
+        window.location.href = "login.html";
+    }
+    </script>
+    <main>
+        <div class="profile-container">
+            <h2>Профиль пользователя</h2>
+            <div class="profile-info">
+                <strong>Имя:</strong> <span id="user-name"></span>
+            </div>
+            <div class="profile-info">
+                <strong>Фамилия:</strong> <span id="user-surname"></span>
+            </div>
+            <div class="profile-info">
+                <strong>Отчество:</strong> <span id="user-patronymic"></span>
+            </div>
+            <div class="profile-info">
+                <strong>Email:</strong> <span id="user-email"></span>
+            </div>
+            <div class="profile-info">
+                <strong>Телефон:</strong> <span id="user-phone"></span>
+            </div>
+            <button class="button_1" type="submit">Редактировать профиль</button>
+
+            <h3>Мои бронирования</h3>
+            <div id="bookings">
+                <!-- Здесь будут отображаться бронирования -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-container">
+            <div class="contact-info">
+                <h3>Контактная информация</h3>
+                <p>Телефон: <a href="#">+7 (777) 777-77-77</a></p>
+                <p>Email: <a href="#">info@eleganthotel.com</a></p>
+            </div>
+            <div class="navigation">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="rooms.html">Номера</a></li>
+                    <li><a href="posts.html">Новости</a></li>
+                    <li><a href="profil.html">Профиль</a></li>
+                    <li><a href="login.html">Авторизация</a></li>
+                    <li><a href="register.html">Регистрация</a></li>
+                    <li><a href="#" onclick="logout()">Выход</a></li>
+                </ul>
+            </div>
+            <div class="social-media">
+                <h3>Социальные сети</h3>
+                <a href="https://t.me/elegant_kostroma" target="_blank" class="social-icon"><img src="photo/telegram.png" alt="Telegram" class="logo"></a>
+            </div>
+        </div>
+    </footer>
+    <script src="js/bookings.js"></script> <!-- Подключаем bookings.js -->
+    <script src="js/prof.js"></script>
+</body>
+</html>
+

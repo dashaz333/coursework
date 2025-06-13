@@ -1,0 +1,568 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif; /* Основной шрифт */
+    background-color: #f4f4f4; /* Светло-серый фон */
+    color: #333; /* Темный цвет текста */
+}
+
+header {
+    background: #1F0E02; /* Темный фон для заголовка */
+    color: #ffffff; /* Белый текст */
+    padding: 10px 0; /* Отступы */
+    position: fixed; /* Фиксированное положение */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999; /* Высокий уровень по оси Z */
+}
+
+.current a {
+    color: #906951; /* Цвет для текущей страницы */
+    font-weight: bold; /* Жирный шрифт для выделения */
+}
+
+
+#logo-and-name {
+    display: flex; /* Flexbox для логотипа и названия */
+    align-items: center; /* Выравнивание по центру */
+    justify-content: space-between; /* Пространство между элементами */
+}
+
+.logo {
+    width: 120px; /* Ширина логотипа */
+    height: auto; /* Автоматическая высота */
+    margin-right: 5px;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Плавный переход */
+}
+
+.logo:hover {
+    opacity: 0.8; /* Изменяем прозрачность при наведении */
+    transform: scale(1.1); /* Увеличиваем иконку при наведении */
+}
+
+#logo-and-name h1 {
+    font-size: 32px; /* Размер шрифта для заголовка */
+    color: white; /* Белый цвет */
+    margin: 0; /* Убираем отступ */
+}
+
+.container {
+    width: 80%; /* Ширина контейнера */
+    margin: auto; /* Центрирование контейнера */
+}
+
+nav {
+    float: right; /* Перемещение навигации вправо */
+}
+
+nav ul {
+    list-style: none; /* Убираем маркеры у списка */
+}
+
+nav ul li {
+    display: inline; /* Выводим элементы списка в ряд */
+    margin-left: 20px; /* Отступ между элементами */
+}
+
+nav ul li a {
+    color: #ffffff; /* Белый цвет текста для ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+    cursor: pointer; /* Курсор при наведении */
+    transition: color 0.3s; /* Плавный переход фона */
+}
+
+nav a:hover {
+    color: #C7916F; /* Цвет текста при наведении */
+    transition: color 0.3s; /* Плавный переход фона */
+}
+
+.current a {
+    color: #C7916F; /* Цвет для текущей страницы */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+/* Main Section Styles */
+
+#main {
+    padding: 20px 0; /* Отступы для основной секции */
+    margin-top: 200px; /* Место для фиксированного заголовка */
+}
+
+#main-col {
+    background: #ffffff; /* Белый фон для основного контента */
+    padding: 20px; /* Отступы */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+/* Rooms Container Styles */
+
+#rooms {
+    margin-top: 50px; /* Пространство над контейнером с номерами */
+    display: flex; /* Flexbox для размещения */
+    flex-wrap: wrap; /* Перенос элементов */
+    gap: 20px; /* Пространство между элементами */
+}
+
+/* Individual Room Styles */
+
+.room {
+    background: #e9ecef; /* Светло-серый фон для каждого номера */
+    border: 1px solid #ccc; /* Серый бордер */
+    border-radius: 8px; /* Закругленные углы */
+    padding: 15px; /* Отступы */
+    flex: 1 1 calc(33% - 20px); /* Адаптивная ширина */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Тень */
+}
+
+.room h3 {
+    margin-bottom: 10px; /* Отступ под заголовком номера */
+}
+
+.room p {
+    margin-bottom: 10px; /* Отступ под параграфами */
+}
+
+.room button {
+    background: #1F0E02; /* Темный фон для кнопок */
+    color: #ffffff; /* Белый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background 0.3s; /* Плавный переход фона */
+}
+
+.room button:hover {
+    background: #C7916F; /* Изменение фона при наведении */
+}
+
+/* Clearfix for header */
+header::after {
+    content: "";
+    display: table;
+    clear: both; /* Убираем флоаты */
+}
+
+/* Footer Styles */
+
+footer {
+    background: #1F0E02; /* Темный фон для подвала */
+    color: #ffffff; /* Белый текст */
+    text-align: center; /* Центрирование текста */
+    padding: 20px 0; /* Отступы */
+    position: relative; /* Позиционирование */
+    width: 100%; /* Полная ширина */
+}
+
+.footer-container {
+    width: 80%; /* Ширина контейнера подвала */
+    margin: 0 auto; /* Центрирование */
+    display: flex; /* Flexbox для размещения */
+    flex-wrap: wrap; /* Перенос элементов */
+    justify-content: space-between; /* Пространство между элементами */
+}
+
+.contact-info, .navigation, .social-media {
+    flex: 1 1 30%; /* Адаптивное поведение колонок */
+    margin: 10px; /* Отступы для колонок */
+}
+
+h3 {
+    padding-bottom: 10px; /* Отступ от нижней границы */
+}
+
+.social-media {
+    text-align: center; /* Центрирование иконок */
+}
+
+.social-icon img {
+    width: 60px; /* Ширина иконок */
+    height: 60px; /* Высота иконок */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Плавный переход */
+}
+
+.social-icon:hover img {
+    opacity: 0.8; /* Изменяем прозрачность при наведении */
+    transform: scale(1.1); /* Увеличиваем иконку при наведении */
+}
+
+p, ul {
+    margin: 5px 0; /* Отступы для параграфов и списков */
+}
+
+ul {
+    list-style: none; /* Убираем маркеры списка */
+    padding: 0; /* Убираем отступы */
+}
+
+ul li {
+    margin: 5px 0; /* Отступы для элементов списка */
+}
+
+ul li a {
+    color: #ffffff; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+}
+
+ul li a:hover {
+    color: #C7916F; /* Цвет ссылок при наведении */
+}
+
+/* Основные стили для абзацев с контактной информацией */
+.contact-info p {
+    margin-bottom: 10px; /* Отступ между строками */
+    font-size: 16px;     /* Размер шрифта */
+    color: #C7916F;          /* Цвет текста */
+}
+
+/* Ссылка на номер телефона */
+.contact-info a {
+    color: inherit;      /* Наследуем цвет текста от родительского элемента */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+/* Ссылка на email */
+.contact-info a:hover {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+
+/* Модальное окно */
+.modal {
+    display: none; /* По умолчанию скрыто */
+    position: fixed; /* Зафиксировано относительно окна браузера */
+    z-index: 1000; /* Поверх остальных элементов */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    background-color: #fff; /* Белый фон */
+    margin: 15% auto; /* Отступ сверху и центрирование */
+    padding: 20px;
+    border-radius: 5px; /* Закругленные углы */
+    width: 80%; /* Ширина модального окна */
+    max-width: 400px; /* Максимальная ширина */
+    text-align: center; /* Центрирование текста */
+}
+
+/* Кнопка закрыть */
+.close-button {
+    color: #aaa; /* Серый цвет */
+    float: right; /* Вправо */
+    font-size: 30px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+/* Кнопка закрыть при наведении */
+.close-button:hover,
+.close-button:focus {
+    color: black; /* Черный цвет при наведении */
+    text-decoration: none; /* Убираем подчеркивание */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.modal-content button {
+    background: #1F0E02; /* Темный фон для кнопок */
+    color: #ffffff; /* Белый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background 0.3s; /* Плавный переход фона */
+    margin: 5px; /* Добавлен отступ между кнопками */
+}
+
+.modal-content button:hover {
+    background: #C7916F; /* Изменение фона при наведении */
+}
+
+/* Общие стили для обоих секций */
+#about-us,
+#director {
+    background-color: #f4f4f4; /* Светло-серый фон для секций */
+    padding: 45px 130px; /* Отступы вокруг секций */
+    margin-bottom: 20px; /* Отступ между секциями */
+}
+
+.about-container{
+    display: flex; /* Используем flexbox для размещения элементов */
+    align-items: center; /* Выравнивание по центру */
+    justify-content: space-between; /* Расстояние между элементами */
+    max-width: 1200px; /* Ограничение максимальной ширины */
+    margin: 0 auto; /* Центрирование контейнеров */
+    margin-top: 245px;
+}
+
+.director-container {
+    display: flex; /* Используем flexbox для размещения элементов */
+    align-items: center; /* Выравнивание по центру */
+    justify-content: space-between; /* Расстояние между элементами */
+    max-width: 1200px; /* Ограничение максимальной ширины */
+    margin: 0 auto; /* Центрирование контейнеров */
+
+}
+
+/* Стили для текстовых блоков */
+.about-text, .director-text {
+    flex: 1; /* Позволяем текстовому блоку занимать доступное пространство */
+    margin-right: 20px; /* Отступ справа для текста */
+    font-size: 20px;
+}
+
+.about-image, .director-image {
+    flex: 1; /* Изображения также занимают доступное пространство */
+}
+
+.about-image img, .director-image img {
+    height: auto;
+    width: 400px;
+    height: auto; /* Автоматическая высота для сохранения пропорций */
+    border-radius: 10px; /* Закругленные углы изображения */
+}
+
+/* Дополнительные стили для центрального выравнивания гендиректора */
+.director-text p {
+    margin: 0; /* Убираем отступы у параграфа */
+    font-size: 20px;
+}
+
+/* Общее выравнивание для заголовков */
+h2 {
+    margin-bottom: 10px; /* Отступ внизу заголовка */
+    color: #1F0E02; /* Цвет заголовка */
+    font-size: 55px;
+}
+
+
+/* Контейнер */
+.container-post, .container-rooms {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Основная колонка */
+#main-col {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Заголовок */
+#main-col h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Стили для постов */
+#posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#posts img {
+    width: 100%;
+    height: auto;
+    max-width: 300px; /* Максимальный размер изображений */
+    object-fit: cover; /* Сохранение пропорций */
+    border-radius: 8px; /* Скругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    margin-bottom: 1rem; /* Интервал между изображениями */
+}
+
+/* Оформление постов */
+.post-item {
+    background-color: #fafafa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post {
+    width: calc((100% / 3) - 15px); /* Рассчитываем ширину поста с учетом отступов */
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Контейнер */
+.container-vvod {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Основная колонка */
+#main-log {
+    text-align: center;
+}
+
+/* Заголовок */
+#main-log h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Поля ввода */
+#loginForm label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+#loginForm input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+#loginForm input:focus {
+    border-color: #007bff;
+}
+
+/* Кнопка входа */
+.button_1 {
+    background: #1F0E02; /* Темный фон для кнопок */
+    color: #ffffff; /* Белый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background 0.3s; /* Плавный переход фона */
+    font-size: 15px;
+}
+
+.button_1:hover {
+    background: #C7916F; /* Изменение фона при наведении */
+}
+
+/* Отступы внутри form */
+#loginForm div {
+    margin-bottom: 15px;
+}
+
+.profile-container {
+    max-width: 600px; 
+    margin: 40px auto; 
+    padding: 20px; 
+    border-radius: 10px; 
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    color: rgb(66, 48, 48);
+    margin-top: 240px;
+}
+
+.profile-info {
+    margin-bottom: 20px; 
+    padding: 10px;
+    border-bottom: 1px solid #ddd; 
+}
+
+.profile-info strong {
+    display: inline-block; 
+    width: 150px; 
+    font-weight: 600; 
+    color: #35424a; 
+}
+
+
+.profile-info:last-child {
+    border-bottom: none;
+}
+
+/* Стили для формы бронирования */
+.booking-form {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.booking-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.booking-form input[type="text"],
+.booking-form input[type="email"],
+.booking-form input[type="tel"],
+.booking-form select,
+.booking-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.booking-form input[type="date"] {
+    width: 48%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.booking-form button {
+    background: #1F0E02; /* Темный фон для кнопок */
+    color: #ffffff; /* Белый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background 0.3s; /* Плавный переход фона */
+    font-size: 15px;
+}
+
+.booking-form button:hover {
+    background: #C7916F; /* Изменение фона при наведении */
+}
+
+.button_2 {
+    display: inline-block; /* Делаем ссылку блочным элементом */
+    background: #1F0E02; /* Темный фон для кнопок */
+    color: #ffffff; /* Белый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы */
+    cursor: pointer; /* Курсор при наведении */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    transition: background 0.3s; /* Плавный переход фона */
+    font-size: 15px;
+}
+
+.button_2:hover {
+    background: #C7916F; /* Изменение фона при наведении */
+}
