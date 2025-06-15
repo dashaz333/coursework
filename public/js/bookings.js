@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (roomIdOnLoad) {
             fetchRoomDetails(roomIdOnLoad)
                 .then(room => {
-                    const roomNameElement = document.getElementById('selected-room-name');
+                    const roomNameElement = document.getElementById('selected-room-name'); //
                     if (roomNameElement && room && room.name) {
                         roomNameElement.textContent = `Выбранный номер: ${room.name}`;
                     } else if (roomNameElement) {
