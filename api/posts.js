@@ -1,95 +1,95 @@
 const express = require('express');
-const router = express.Router(); // Создание маршрутизатора Express
-const db = require('../database'); // Подключение к базе данных
+const router = express.Router();
+const db = require('../database');
 
-// Middleware для обработки JSON входящих запросов.
+// Middleware для обработки JSON
 router.use(express.json());
 
-// GET /posts: Получение списка всех постов.
+// GET all posts
 router.get('/', async (req, res) => {
     try {
-        // Выполняем SQL-запрос для получения всех постов.
-        // Обратите внимание: здесь выбирается 'content', а не 'max' для краткого содержимого.
         const [rows] = await db.query("SELECT id, title, content, author_id, image_url FROM posts");
         console.log("Данные, полученные из базы данных:", rows); // Отладочный лог
-        res.json(rows); // Отправляем данные в формате JSON
+        res.json(rows);
     } catch (error) {
-        console.error("Ошибка при получении постов:", error); // Логируем ошибку
-        res.status(500).json({ message: "Ошибка сервера" }); // Отправляем ответ с ошибкой сервера
+        console.error("Ошибка при получении постов:", error);
+        res.status(500).json({ message: "Ошибка сервера" });
     }
 });
 
-// GET /posts/:id: Получение одного поста по ID.
+// GET a single post by ID
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Получаем ID из параметров запроса
-        // Выполняем SQL-запрос для получения поста по ID.
-        // Здесь выбирается 'max' для полного содержимого поста.
+        const { id } = req.params;
         const [rows] = await db.query("SELECT id, title, max, content, author_id, image_url FROM posts WHERE id = ?", [id]);
+
         if (rows.length > 0) {
             console.log("Данные из API:", rows[0]); // Проверка данных
-            res.json(rows[0]); // Отправляем найденный пост
+            res.json(rows[0]);
         } else {
-            res.status(404).json({ message: "Пост не найден" }); // Отправляем ошибку 404
+            res.status(404).json({ message: "Пост не найден" });
         }
     } catch (error) {
-        console.error("Ошибка при получении поста:", error); // Логируем ошибку
-        res.status(500).json({ message: "Ошибка сервера" }); // Отправляем ответ с ошибкой сервера
+        console.error("Ошибка при получении поста:", error);
+        res.status(500).json({ message: "Ошибка сервера" });
     }
 });
 
-// POST /posts: Создание нового поста.
+
+
+// POST (create) a new post
 router.post('/', async (req, res) => {
     try {
-        const { title, content, author_id, image_url } = req.body; // Получаем данные из тела запроса
-        // Выполняем SQL-запрос для добавления нового поста.
+        const { title, content, author_id, image_url } = req.body;
         const [result] = await db.query("INSERT INTO posts (title, content, author_id, image_url) VALUES (?, ?, ?, ?)", [title, content, author_id, image_url]);
-        const newPost = { id: result.insertId, title, content, author_id, image_url }; // Формируем объект нового поста
-        res.status(201).json(newPost); // Отправляем данные созданного поста с кодом 201 (Created)
+        const newPost = { id: result.insertId, title, content, author_id, image_url };
+        res.status(201).json(newPost); // Используйте 201 Created для успешного создания
     } catch (error) {
-        console.error("Ошибка при добавлении поста:", error); // Логируем ошибку
-        res.status(400).json({ message: "Некорректный запрос", error: error.message }); // Отправляем ошибку 400
+        console.error("Ошибка при добавлении поста:", error);
+        res.status(400).json({ message: "Некорректный запрос", error: error.message });
     }
 });
 
-// PUT /posts/:id: Обновление существующего поста.
+// PUT (update) an existing post
 router.put('/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Получаем ID из параметров запроса
-        const { title, content, content_max, author_id, image_url } = req.body; // Получаем обновленные данные из тела запроса, включая content_max
-        // Выполняем SQL-запрос для обновления данных поста.
-        // Обновляем как 'content' (краткое содержание), так и 'max' (полное содержание).
+        const { id } = req.params;
+        const { title, content, content_max, author_id, image_url } = req.body; // Обновлено для получения content_max
+
+        // Измененный SQL запрос для обновления обоих полей
         const [result] = await db.query(
-            "UPDATE posts SET title = ?, content = ?, max = ?, author_id = ?, image_url = ? WHERE id = ?",
+            "UPDATE posts SET title = ?, content = ?, content_max = ?, author_id = ?, image_url = ? WHERE id = ?",
             [title, content, content_max, author_id, image_url, id]
         );
+
         if (result.affectedRows > 0) {
-            const updatedPost = { id: parseInt(id), title, content, content_max, author_id, image_url }; // Формируем объект обновленного поста
-            res.json(updatedPost); // Отправляем обновленные данные
+            const updatedPost = { id: parseInt(id), title, content, content_max, author_id, image_url };
+            res.json(updatedPost);
         } else {
-            res.status(404).json({ message: "Пост не найден" }); // Отправляем ошибку 404
+            res.status(404).json({ message: "Пост не найден" });
         }
     } catch (error) {
-        console.error("Ошибка при обновлении поста:", error); // Логируем ошибку
-        res.status(400).json({ message: "Некорректный запрос", error: error.message }); // Отправляем ошибку 400
+        console.error("Ошибка при обновлении поста:", error);
+        res.status(400).json({ message: "Некорректный запрос", error: error.message });
     }
 });
 
-// DELETE /posts/:id: Удаление поста по ID.
+
+// DELETE a post by ID
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Получаем ID из параметров запроса
-        // Выполняем SQL-запрос для удаления поста по ID.
+        const { id } = req.params;
         const [result] = await db.query("DELETE FROM posts WHERE id = ?", [id]);
+
         if (result.affectedRows > 0) {
-            res.json({ message: `Пост с ID ${id} успешно удален` }); // Отправляем сообщение об успешном удалении
+            res.json({ message: `Пост с ID ${id} успешно удален` });
         } else {
-            res.status(404).json({ message: "Пост не найден" }); // Отправляем ошибку 404
+            res.status(404).json({ message: "Пост не найден" });
         }
     } catch (error) {
-        console.error("Ошибка при удалении поста:", error); // Логируем ошибку
-        res.status(500).json({ message: "Ошибка сервера" }); // Отправляем ответ с ошибкой сервера
+        console.error("Ошибка при удалении поста:", error);
+        res.status(500).json({ message: "Ошибка сервера" });
     }
 });
 
-module.exports = router; // Экспортируем маршрутизатор
+module.exports = router;

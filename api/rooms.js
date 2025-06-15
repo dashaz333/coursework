@@ -1,86 +1,72 @@
-const express = require('express');
-const router = express.Router(); // Создание маршрутизатора Express
-const db = require('../database'); // Подключение к базе данных
-
-// GET /rooms: Получение списка всех номеров.
+const express = require('express'); 
+const router = express.Router(); // Создание router express
+const db = require('../database');
+// Получить все номера 
 router.get('/', async (req, res) => {
     try {
-        // Выполняем SQL-запрос для получения всех номеров.
         const [rows] = await db.query("SELECT id, name, description, price, max_occupancy, is_available, amenities, image_url FROM rooms");
-        res.json(rows); // Отправляем данные в формате JSON
+        res.json(rows);
     } catch (error) {
-        console.error("Ошибка при получении номеров:", error); // Логируем ошибку
-        res.status(500).json({ message: "Ошибка сервера" }); // Отправляем ответ с ошибкой сервера
+        console.error("Ошибка при получении номеров:", error);
+        res.status(500).json({ message: "Ошибка сервера" });
     }
 });
-
-// GET /rooms/:id: Получение номера по ID.
+// Получить номер по ID
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Получаем ID из параметров запроса
-        // Выполняем SQL-запрос для получения номера по ID.
+        const { id } = req.params;
         const [rows] = await db.query("SELECT id, name, description, price, max_occupancy, is_available, amenities, image_url FROM rooms WHERE id = ?", [id]);
         if (rows.length > 0) {
-            res.json(rows[0]); // Отправляем найденный номер
+            res.json(rows[0]);
         } else {
-            res.status(404).json({ message: "Номер не найден" }); // Отправляем ошибку 404
+            res.status(404).json({ message: "Номер не найден" });
         }
     } catch (error) {
-        console.error("Ошибка при получении номера:", error); // Логируем ошибку
-        res.status(500).json({ message: "Ошибка сервера" }); // Отправляем ответ с ошибкой сервера
+        console.error("Ошибка при получении номера:", error);
+        res.status(500).json({ message: "Ошибка сервера" });
     }
 });
-
-// DELETE /rooms/:id: Удаление номера по ID.
+// Удалить номер по ID
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Получаем ID из параметров запроса
-        // Выполняем SQL-запрос для удаления номера по ID.
+        const { id } = req.params;
         const [result] = await db.query("DELETE FROM rooms WHERE id = ?", [id]);
         if (result.affectedRows > 0) {
-            res.json({ id: id }); // Отправляем id удаленного номера
+            res.json({ id: id });
         } else {
-            res.status(404).json({ message: "Номер не найден" }); // Отправляем ошибку 404
+            res.status(404).json({ message: "Номер не найден" });
         }
     } catch (error) {
-        console.error("Ошибка при удалении номера:", error); // Логируем ошибку
-        res.status(500).json({ message: "Ошибка сервера" }); // Отправляем ответ с ошибкой сервера
+        console.error("Ошибка при удалении номера:", error);
+        res.status(500).json({ message: "Ошибка сервера" });
     }
 });
-
-// POST /rooms: Создание нового номера.
+// Создание нового номера
 router.post('/', async (req, res) => {
     try {
-        const { type, description, price, max_occupancy, is_available, amenities, image_url } = req.body; // Получаем данные из тела запроса
-        // Выполняем SQL-запрос для добавления нового номера.
+        const { type, description, price, max_occupancy, is_available, amenities, image_url } = req.body;
         const [result] = await db.query("INSERT INTO rooms (type, description, price, max_occupancy, is_available, amenities, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)", [type, description, price, max_occupancy, is_available, amenities, image_url]);
-        const newRoom = { id: result.insertId, type, description, price, max_occupancy, is_available, amenities, image_url }; // Формируем объект нового номера
-        res.json(newRoom); // Отправляем данные созданного номера
+        const newRoom = { id: result.insertId, type, description, price, max_occupancy, is_available, amenities, image_url };
+        res.json(newRoom);
     } catch (error) {
-        console.error("Ошибка при добавлении номера:", error); // Логируем ошибку
-        res.status(400).json({ message: "Некорректный запрос", error: error.message }); // Отправляем ошибку 400
+        console.error("Ошибка при добавлении номера:", error);
+        res.status(400).json({ message: "Некорректный запрос", error: error.message });
     }
 });
-
-// PUT /rooms/:id: Обновление данных о номере.
-router.put('/:id', async (req, res) => { // Исправлено на PUT с ID в пути
+// Обновить данные о номере
+router.put('/', async (req, res) => {
     try {
-        const { id } = req.params; // Получаем ID из параметров запроса
-        const { type, description, price, max_occupancy, is_available, amenities, image_url } = req.body; // Получаем обновленные данные из тела запроса
-
-        // Выполняем SQL-запрос для обновления данных номера по ID.
-        const [result] = await db.query("UPDATE rooms SET type = ?, description = ?, price = ?, max_occupancy = ?, is_available = ?, amenities = ?, image_url = ? WHERE id = ?", [type, description, price, max_occupancy, is_available, amenities, image_url, id]); // Используем ID из параметров маршрута
-
+        const { id, type, description, price, max_occupancy, is_available, amenities, image_url } = req.body;
+        const [result] = await db.query("UPDATE rooms SET type = ?, description = ?, price = ?, max_occupancy = ?, is_available = ?, amenities = ?, image_url = ? WHERE id = ?", [type, description, price, max_occupancy, is_available, amenities, image_url, id]);
         if (result.affectedRows > 0) {
-            // Возвращаем обновленные данные (можно получить их из базы после обновления для точности)
             res.json({ id, type, description, price, max_occupancy, is_available, amenities, image_url });
         } else {
-            res.status(404).json({ message: "Номер не найден" }); // Отправляем ошибку 404
+            res.status(404).json({ message: "Номер не найден" });
         }
     } catch (error) {
-        console.error("Ошибка при обновлении номера:", error); // Логируем ошибку
-        res.status(400).json({ message: "Некорректный запрос", error: error.message }); // Отправляем ошибку 400
+        console.error("Ошибка при обновлении номера:", error);
+        res.status(400).json({ message: "Некорректный запрос", error: error.message });
     }
 });
 
-module.exports = router; // Экспортируем маршрутизатор
+module.exports = router; // Экспортируйте router

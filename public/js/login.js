@@ -24,7 +24,7 @@ loginForm.addEventListener('submit', async (e) => {
             const data = await response.json(); // Получаем данные с сервера
 
             // Сохраняем ID в sessionStorage
-            sessionStorage.setItem('userId', data.user.id); // Сохранение ID пользователя
+            sessionStorage.setItem('user_id', data.user.id); // Сохранение ID пользователя
             sessionStorage.setItem('userName', data.user.name); // Сохранение имени пользователя
             sessionStorage.setItem('userEmail', data.user.email); // Сохранение email пользователя
 
