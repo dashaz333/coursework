@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const [rows] = await db.query("SELECT id, name, surname, patronymic, email, phone FROM users WHERE id = ?", [id]);
+        const [rows] = await db.query("SELECT id, name, surname, patronymic, email, phone, rights FROM users WHERE id = ?", [id]);
 
         if (rows.length > 0) {
             res.json(rows[0]);
@@ -86,7 +86,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ success: false, message: "Неверный пароль" });
         }
         // Отправляем данные пользователя в ответе
-        res.json({ success: true, user: { id: user.id, email: user.email, name: user.name } });
+        res.json({ success: true, user: { id: user.id, email: user.email, name: user.name, rights: user.rights } }); // <-- ИЗМЕНЕНО ЗДЕСЬ
     } catch (error) {
         console.error("Ошибка при авторизации:", error);
         res.status(500).json({ success: false, message: "Ошибка сервера" });
@@ -119,27 +119,6 @@ router.put('/:id', async (req, res) => {
     } catch (error) {
         console.error("Ошибка при обновлении пользователя:", error);
         res.status(400).json({ message: "Некорректный запрос" });
-    }
-});
-
-// Добавляем функцию login
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const [users] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
-
-        if (users.length === 0) {
-            return res.status(404).json({ success: false, message: "Пользователь с таким email не найден" });
-        }
-        const user = users[0];
-
-        if (user.password !== password) {
-            return res.status(401).json({ success: false, message: "Неверный пароль" });
-        }
-        res.json({ success: true, user: user });
-    } catch (error) {
-        console.error("Ошибка при авторизации:", error);
-        res.status(500).json({ success: false, message: "Ошибка сервера" });
     }
 });
 

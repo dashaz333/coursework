@@ -12,34 +12,30 @@ function getParameterByName(name, url = window.location.href) {
 const postId = getParameterByName('id');
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    // --- Логика для отображения поста (ваш существующий код) ---
     if (postId) {
-        // Получаем данные поста с сервера
         fetchPost(postId)
             .then(post => {
                 if (post) {
-                    // Отображаем данные поста на странице
                     displayPost(post);
                 } else {
                     console.log('Пост не найден');
-                    // Отображаем сообщение об ошибке на странице
                     displayErrorMessage('Пост не найден');
                 }
             })
             .catch(error => {
                 console.error('Ошибка при получении поста:', error);
-                // Отображаем сообщение об ошибке на странице
                 displayErrorMessage('Ошибка при получении поста');
             });
     } else {
         console.log('ID поста не найден в URL');
-        // Отображаем сообщение об ошибке на странице
         displayErrorMessage('ID поста не найден в URL');
     }
 
     // Функция для получения данных поста из API
     async function fetchPost(postId) {
         try {
-            // Выполняем запрос к вашему API для получения поста по ID
             const response = await fetch(`/api/posts/${postId}`);
             if (!response.ok) {
                 throw new Error('Ошибка при получении поста');
@@ -47,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return await response.json();
         } catch (error) {
             console.error("Ошибка в fetchPost:", error);
-            throw error; // Бросаем ошибку дальше для обработки
+            throw error;
         }
     }
 
@@ -58,16 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Элемент с id "posts" не найден');
             return;
         }
-
         let imageHTML = '';
         if (post.image_url) {
             imageHTML = `<img src="${post.image_url}" alt="Изображение к посту ${post.title}">`;
         }
-
         postsContainer.innerHTML = `
             <h3>${post.title}</h3>
             ${imageHTML}
-            <p>${post.max}</p> 
+            <p>${post.max}</p>
         `;
     }
 
@@ -78,7 +72,15 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Элемент с id "posts" не найден');
             return;
         }
-
         postsContainer.innerHTML = `<p class="error-message">${message}</p>`;
+    }
+
+    // --- Код для кнопки "Назад" ---
+    const backButton = document.querySelector('.button_1'); // Находим кнопку по классу
+
+    if (backButton && backButton.textContent.trim() === 'Назад') { // Проверяем, что кнопка найдена и текст соответствует
+        backButton.addEventListener('click', function() {
+            window.location.href = 'posts.html'; // Перенаправляем пользователя
+        });
     }
 });

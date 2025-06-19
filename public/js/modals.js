@@ -7,14 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var profileLink = document.getElementById('profile-link'); // Ссылка на Профиль
 
-    // Функция для проверки наличия идентификатора пользователя (ВАША РЕАЛИЗАЦИЯ)
+    // Функция для проверки наличия идентификатора пользователя
     function checkUserId() {
-        // Здесь ваша логика проверки ID пользователя.
-        // Пример:
+        
         const userId = sessionStorage.getItem('userId');
         return userId !== null && userId !== '';
-        // ЗАМЕНИТЕ ЭТУ ЧАСТЬ ВАШЕЙ РЕАЛЬНОЙ ЛОГИКОЙ ПРОВЕРКИ!!!
-        // return false; // Пример: всегда показывать модалку для тестирования
+        
     }
 
     // Функция для отображения модального окна

@@ -15,7 +15,11 @@ module.exports = async function (request, response, getReqData) {
     else if (request.url.match(/\/api\/users\/([0-9]+)/) && request.method === "GET") {
         try {
             const id = request.url.split("/")[3];
-            const [rows, fields] = await db.query("SELECT id, name, surname, patronymic, email, phone FROM users WHERE id = ?", [id]);
+            const [rows, fields] = await db.query("SELECT id, name, surname, patronymic, email, phone, rights FROM users WHERE id = ?", [id]);
+
+            // !!! ДОБАВЛЕНО ДЛЯ ОТЛАДКИ НА СЕРВЕРЕ !!!
+            console.log("Результат запроса пользователя по ID из БД:", rows);
+            // !!! КОНЕЦ ДОБАВЛЕННОГО !!!
 
             if (rows.length > 0) {
                 response.end(JSON.stringify(rows[0]));

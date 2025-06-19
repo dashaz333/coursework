@@ -1,18 +1,57 @@
 // js/prof.js
 
-// Функция для обработки выхода (как предоставлено пользователем)
+// Функция для отображения модального окна (скопирована из примера авторизации)
+function showModal(message, onConfirm, showCancel = false) {
+    const modal = document.createElement('div');
+    modal.className = 'modal'; 
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p>${message}</p>
+            <button id="confirm-button">Да</button>
+            ${showCancel ? '<button id="cancel-button">Нет</button>' : ''}
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    const closeButton = modal.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        modal.remove(); // Закрыть модальное окно
+    });
+
+    const confirmButton = modal.querySelector('#confirm-button');
+    confirmButton.addEventListener('click', () => {
+        modal.remove(); // Удалить модальное окно
+        if (onConfirm) {
+            onConfirm(); // Выполнить действие при подтверждении
+        }
+    });
+
+    if (showCancel) {
+        const cancelButton = modal.querySelector('#cancel-button');
+        cancelButton.addEventListener('click', () => {
+            modal.remove(); // Удалить модальное окно
+        });
+    }
+
+    // Показать модальное окно
+    modal.style.display = 'block';
+}
+
+// Обновленная функция для обработки выхода
 function logout() {
-    sessionStorage.clear();
-    window.location.href = "login.html";
+    showModal('Вы точно хотите выйти из профиля?', () => {
+        // Действие при нажатии "Да" (выход)
+        sessionStorage.clear(); // Удаляем все данные из Session Storage
+        window.location.href = "login.html"; // Перенаправление на страницу авторизации
+    }, true); // true для отображения кнопки "Нет"
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
     // Получаем user_id из sessionStorage
-    // ИСПРАВЛЕНО: Используем ключ 'user_id' для получения
     const user_id = sessionStorage.getItem('user_id');
 
     // Проверяем, есть ли user_id
-    // ИСПРАВЛЕНО: Проверяем переменную user_id
     if (!user_id) {
         // Если user_id нет, перенаправляем на страницу авторизации
         window.location.href = '/login.html';
@@ -21,10 +60,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
         // Функция для получения данных пользователя из API
-        // ИСПРАВЛЕНО: Используем user_id_param как параметр функции для ясности
         async function fetchUserData(user_id_param) {
-            // Убедитесь, что ваш серверный API /api/users/:id возвращает данные пользователя
-            const response = await fetch(`/api/users/${user_id_param}`); // ИСПРАВЛЕНО: Используем user_id_param в запросе
+            const response = await fetch(`/api/users/${user_id_param}`);
             if (!response.ok) {
                 if (response.status === 404) {
                     throw new Error('Данные пользователя не найдены.');
@@ -35,7 +72,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Получаем данные пользователя
-        // ИСПРАВЛЕНО: Передаем user_id в функцию fetchUserData
         const userData = await fetchUserData(user_id);
 
         // Заполняем HTML-элементы данными пользователя
@@ -45,21 +81,49 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('user-email').textContent = userData.email || '';
         document.getElementById('user-phone').textContent = userData.phone || '';
 
-        // Вызываем функцию для отображения бронирований (определена в bookings.js)
-        // Эта функция найдет элемент #bookings и заполнит его бронированиями пользователя
-        // Убедитесь, что displayBookings корректно получает данные от /api/bookings
-        // displayBookings теперь использует user_id из sessionStorage, которую мы корректно получили выше
-        await displayBookings();
+        // Вызываем функцию для отображения бронирований текущего пользователя (определена в bookings.js)
+        if (typeof displayBookings === 'function') {
+             await displayBookings();
+        } else {
+             console.error('Функция displayBookings не найдена. Убедитесь, что bookings.js подключен до prof.js.');
+        }
+
+        // --- НОВАЯ ЛОГИКА ДЛЯ АДМИНИСТРАТОРА ---
+        // !!! ДОБАВЛЕНО ДЛЯ ОТЛАДКИ !!!
+        console.log('Данные пользователя, полученные с сервера:', userData);
+        console.log('Значение userData.rights:', userData ? userData.rights : 'userData отсутствует');
+        // !!! КОНЕЦ ДОБАВЛЕННОГО !!!
+        // Проверяем права пользователя
+        if (userData && userData.rights === 'a') {
+            console.log('Пользователь является администратором. Отображаем раздел всех бронирований.');
+            // Отображаем скрытый раздел для администратора
+            const adminSection = document.getElementById('admin-bookings-section');
+            if (adminSection) {
+                adminSection.style.display = 'block';
+                // Вызываем функцию для отображения всех бронирований (определена в bookings.js)
+                if (typeof displayAllBookingsAdmin === 'function') {
+                    await displayAllBookingsAdmin();
+                } else {
+                    console.error('Функция displayAllBookingsAdmin не найдена. Убедитесь, что bookings.js подключен до prof.js.');
+                }
+            } else {
+                console.error('Элемент с id "admin-bookings-section" не найден.');
+            }
+        } else {
+            console.log('Пользователь не является администратором. Скрываем раздел всех бронирований.');
+            // Убедимся, что раздел администратора скрыт (на случай, если он был случайно виден)
+             const adminSection = document.getElementById('admin-bookings-section');
+             if (adminSection) {
+                 adminSection.style.display = 'none';
+             }
+        }
+        // --- КОНЕЦ НОВОЙ ЛОГИКИ ---
+
 
     } catch (error) {
         console.error('Ошибка при загрузке профиля:', error);
-        // Вместо alert можно использовать showModal для единообразия
-        // Убедитесь, что showModal доступна в этом файле (подключив bookings.js перед prof.js)
         showModal('Произошла ошибка при загрузке данных профиля: ' + error.message);
     }
+
 });
 
-// displayBookings, showModal, fetchBookings, fetchRoomDetails, checkUserId
-// должны быть доступны в этом файле, если они определены в bookings.js, который подключен ДО prof.js
-// Если bookings.js подключается ПОСЛЕ prof.js в HTML, то displayBookings и другие функции
-// из bookings.js не будут видны в prof.js. Убедитесь, что bookings.js подключен первым.

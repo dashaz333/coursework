@@ -43,7 +43,7 @@ function showModal(message, redirect = false) {
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <p>${message}</p>
-            ${redirect ? '<button id="proceed-button">Перейти к авторизации</button>' : '<button id="ok-button">ОК</button>'} <!-- Кнопка зависит от ситуации -->
+            ${redirect ? '<button id="proceed-button">Перейти к авторизации</button>' : '<button id="ok-button">ОК</button>'}
         </div>
     `;
 

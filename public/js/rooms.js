@@ -15,27 +15,45 @@ async function fetchRooms() {
     }
 }
 
-// Функция для проверки наличия идентификатора пользователя
+// Функция для проверки наличия идентификатора пользователя в sessionStorage
 function checkUserId() {
-    // Здесь может быть ваше условие проверки ID пользователя
-    // Например, получение ID из sessionStorage или cookie
-    const userId = sessionStorage.getItem('userId'); // Пример получения ID
-    return userId !== null && userId !== ''; // Проверка на наличие ID
+    const userId = sessionStorage.getItem('user_id'); // Используем 'user_id' как в prof.js и bookings.js
+    return userId !== null && userId !== '';
 }
 
-// Функция для отображения модального окна
-function showRegistrationModal() {
-    const modal = document.getElementById('registrationModal');
-    if (modal) {
-        modal.style.display = 'block';
+// Функция для отображения модального окна (скопирована из bookings.js для единообразия)
+function showModal(message, redirect = false) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p>${message}</p>
+            ${redirect ? '<button id="proceed-button">Перейти к авторизации</button>' : '<button id="ok-button">ОК</button>'}
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    const closeButton = modal.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        modal.remove();
+    });
+
+    const proceedButton = modal.querySelector('#proceed-button');
+    const okButton = modal.querySelector('#ok-button');
+
+    if (proceedButton) {
+        proceedButton.addEventListener('click', () => {
+            modal.remove();
+            window.location.href = '/login.html';
+        });
+    } else if (okButton) {
+        okButton.addEventListener('click', () => {
+            modal.remove();
+        });
     }
-}
-// Функция для скрытия модального окна
-function hideRegistrationModal() {
-    const modal = document.getElementById('registrationModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+
+    modal.style.display = 'block';
 }
 
 // Функция для отображения списка номеров на странице
@@ -55,7 +73,6 @@ async function displayRooms() {
     rooms.forEach(room => {
         const roomElement = document.createElement('div');
         roomElement.classList.add('room'); // Можно добавить класс для стилизации
-
         let imageHTML = '';
         if (room.image_url) {
             imageHTML = `<img src="${room.image_url}" alt="Фото ${room.name}">`;
@@ -74,12 +91,18 @@ async function displayRooms() {
         // Добавляем обработчик события для кнопки "Забронировать"
         const bookButton = roomElement.querySelector('.book-button');
         bookButton.addEventListener('click', function () {
-            const roomId = this.dataset.roomId; 
-            window.location.href = `bookings.html?id=${roomId}`; 
+            if (checkUserId()) {
+                // Пользователь авторизован, перенаправляем на страницу бронирования
+                const roomId = this.dataset.roomId;
+                window.location.href = `bookings.html?id=${roomId}`;
+            } else {
+                // Пользователь не авторизован, показываем модальное окно
+                showModal('Для бронирования номера необходимо авторизоваться.', true);
+            }
         });
     });
 }
 
 document.addEventListener('DOMContentLoaded', displayRooms);
 
-
+// Оставлены функции showRegistrationModal и hideRegistrationModal, если они используются
