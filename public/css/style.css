@@ -566,3 +566,71 @@ h2 {
 .button_2:hover {
     background: #C7916F; /* Изменение фона при наведении */
 }
+
+/* Стили для формы в модальном окне */
+
+.form-group {
+
+    margin-bottom: 15px;
+
+}
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-weight: bold;
+
+}
+
+.form-group input[type="text"],
+
+.form-group input[type="email"],
+
+.form-group input[type="tel"],
+
+.form-group input[type="password"] {
+
+    width: calc(100% - 22px); /* Учитываем padding и border */
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 4px;
+
+    font-size: 16px;
+
+}
+/* Модальное окно редактирования профиля */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto; /* Уменьшили отступ сверху */
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%; /* Более адаптивная ширина */
+    max-width: 500px; /* Увеличили максимальную ширину */
+    max-height: 80vh; /* Ограничиваем высоту */
+    overflow-y: auto; /* Добавляем прокрутку при необходимости */
+    position: relative;
+}
+
+/* Форма редактирования */
+#edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 0; /* Убираем лишние отступы */
+}
+
+/* Кнопка сохранения - фиксируем внизу */
+#edit-profile-form button[type="submit"] {
+    margin-top: 20px;
+    align-self: center; /* Центрируем кнопку */
+    width: 80%; /* Шире обычных кнопок */
+}
