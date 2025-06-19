@@ -1,32 +1,83 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+
+// Импорт маршрутизаторов для различных ресурсов API
 const usersApi = require('./api/users');
 const roomsApi = require('./api/rooms');
 const bookingsApi = require('./api/bookings');
-const postsApi = require('./api/posts'); // Импортируйте новый модуль postsApi
+const postsApi = require('./api/posts');
+
+/**
+ * Основное Express приложение.
+ * @type {express.Application}
+ */
 const app = express();
+
+/**
+ * Порт, на котором запускается сервер.
+ * @type {number}
+ */
 const port = 3000;
-// Middleware для обработки CORS
+
+// Middleware для обработки CORS (Cross-Origin Resource Sharing)
+/**
+ * @function
+ * @description Middleware для настройки заголовков CORS, позволяющих запросы с любых источников.
+ * @param {Object} req - Объект запроса Express.
+ * @param {Object} res - Объект ответа Express.
+ * @param {Function} next - Функция для перехода к следующему middleware.
+ */
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-// Middleware для обработки JSON и URL-encoded данных
+
+// Middleware для обработки JSON и URL-encoded данных из тела запроса
+/**
+ * @function
+ * @description Middleware для парсинга JSON из тела запроса.
+ */
 app.use(express.json());
+
+/**
+ * @function
+ * @description Middleware для парсинга URL-encoded данных из тела запроса.
+ * @param {Object} options - Опции парсинга.
+ * @param {boolean} options.extended - Использовать библиотеку qs для парсинга (позволяет вложенные объекты).
+ */
 app.use(express.urlencoded({ extended: true }));
-// Маршруты API
+
+// Монтирование маршрутизаторов API для различных ресурсов
+/**
+ * @description Монтирование маршрутов API для пользователей под префиксом /api/users.
+ */
 app.use('/api/users', usersApi);
-// Добавляем новый маршрут для логина
+
+/**
+ * @route POST /api/login
+ * @description Маршрут для аутентификации пользователя.
+ * @access Public
+ * @param {Object} req.body - Данные для аутентификации.
+ * @param {string} req.body.email - Адрес электронной почты пользователя.
+ * @param {string} req.body.password - Пароль пользователя.
+ * @returns {Object} Объект с success: true, id пользователя и dummy_token при успешной аутентификации.
+ * @returns {Object} 401 - Неверный пароль (success: false).
+ * @returns {Object} 500 - Ошибка сервера (success: false).
+ */
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const result = await usersApi.login(email, password); // Используем функцию login из usersApi
+        // Используем функцию login из модуля usersApi для проверки учетных данных
+        const result = await usersApi.login(email, password);
+
         if (result.success) {
-            res.json({ success: true, id: result.user.id, token: 'dummy_token' }); // Заглушка для токена
+            // При успешной аутентификации отправляем success: true, id пользователя и заглушку токена
+            res.json({ success: true, id: result.user.id, token: 'dummy_token' });
         } else {
+            // При ошибке аутентификации отправляем соответствующий статус и сообщение
             res.status(401).json({ success: false, message: result.message });
         }
     } catch (error) {
@@ -34,12 +85,38 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ success: false, message: "Ошибка сервера" });
     }
 });
+
+/**
+ * @description Монтирование маршрутов API для номеров под префиксом /api/rooms.
+ */
 app.use('/api/rooms', roomsApi);
+
+/**
+ * @description Монтирование маршрутов API для бронирований под префиксом /api/bookings.
+ */
 app.use('/api/bookings', bookingsApi);
-app.use('/api/posts', postsApi); // Используйте новый модуль postsApi
-// Обслуживание статических файлов
+
+/**
+ * @description Монтирование маршрутов API для постов под префиксом /api/posts.
+ */
+app.use('/api/posts', postsApi);
+
+// Обслуживание статических файлов из папки 'public'
+/**
+ * @description Middleware для обслуживания статических файлов (HTML, CSS, JS и т.д.) из папки 'public'.
+ * @param {string} root - Корневая директория для статических файлов.
+ */
 app.use(express.static(path.join(__dirname, 'public')));
+
 // Обработка 404 ошибки для статических файлов
+/**
+ * @function
+ * @description Middleware для обработки запросов к несуществующим статическим файлам,
+ *              отправляет страницу 404.html или простое сообщение об ошибке.
+ * @param {Object} req - Объект запроса Express.
+ * @param {Object} res - Объект ответа Express.
+ * @param {Function} next - Функция для перехода к следующему middleware.
+ */
 app.use((req, res, next) => {
     const filePath = path.join(__dirname, 'public', '404.html');
     fs.readFile(filePath, (error, content) => {
@@ -50,7 +127,13 @@ app.use((req, res, next) => {
         }
     })
 });
-// Запуск сервера
+
+// Запуск HTTP-сервера
+/**
+ * Запускает HTTP-сервер на указанном порту.
+ * @param {number} port - Порт для прослушивания.
+ * @param {Function} callback - Функция, вызываемая после успешного запуска сервера.
+ */
 app.listen(port, () => {
     console.log(`Сервер запущен по адресу http://localhost:${port}`);
 });
